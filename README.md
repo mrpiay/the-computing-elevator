@@ -12,3 +12,32 @@ The simulator represents a minimal computer architecture illustrated as **twin t
 The Computing Elevator supports instructions encoded with one or two denary digits, as defined in its **Instruction Set**, emulating a machine code programming language. With only 10 instruction and data floors available, it encourages users to get creative, designing their own problems and solving them efficiently, like generating a full Fibonacci sequence in just 9 instructions (see Example 10).
 
 Users can design their own programs by entering instructions and data on the respective floors. These programs can be **saved** to a JSON file and **loaded** later, facilitating sharing and experimentation.
+
+
+## Instruction Set
+
+### Memory & Arithmetic
+
+| Code | Instruction       | Description                                                      |
+|------|-------------------|------------------------------------------------------------------|
+| 0X   | ACC ← DATA[X]     | Copy the value stored on data floor X into the elevator          |
+| 1X   | ACC ← ACC + DATA[X] | Add the value stored on data floor X to the elevator            |
+| 2X   | ACC ← ACC - DATA[X] | Subtract the value stored on data floor X from the elevator    |
+| 3X   | X ← ACC           | Copy the value from the elevator into data floor X               |
+| 7X   | ACC ← DATA[X + DATA[9]] | Copy the value stored on data floor (X + DATA[9]) into the elevator (indexed addressing) |
+
+### Program Flow
+
+| Code | Instruction               | Description                                                  |
+|------|---------------------------|--------------------------------------------------------------|
+| 4X   | PC ← X                    | Go to instruction floor X                                     |
+| 5X   | IF ACC == 0 THEN PC ← X  | If the elevator value is 0, go to instruction floor X        |
+| 6X   | IF ACC < 0 THEN PC ← X   | If the elevator value is less than 0, go to instruction floor X |
+
+### Input/Output
+
+| Code | Instruction       | Description                                      |
+|------|-------------------|--------------------------------------------------|
+| 7    | ACC ← INPUT       | Copy the value entered by the user into the elevator |
+| 8    | OUTPUT ← ACC      | Copy the value from the elevator into the output |
+| 9    | STOP              | Stop the program                                |
