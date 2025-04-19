@@ -23,7 +23,7 @@ Users can design their own programs by entering instructions and data on the res
 | 0X   | ACC ← DATA[X]     | Copy the value stored on data floor X into the elevator          |
 | 1X   | ACC ← ACC + DATA[X] | Add the value stored on data floor X to the elevator            |
 | 2X   | ACC ← ACC - DATA[X] | Subtract the value stored on data floor X from the elevator    |
-| 3X   | X ← ACC           | Copy the value from the elevator into data floor X               |
+| 3X   | DATA[X] ← ACC           | Copy the value from the elevator into data floor X               |
 | 7X   | ACC ← DATA[X + DATA[9]] | Copy the value stored on data floor (X + DATA[9]) into the elevator (indexed addressing) |
 
 ### Program Flow
