@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Computing Elevator</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+			width: 80%;
+			margin: 0 auto;
+			display: flex;
+            justify-content: center;
+			align-items: center; 	
+            gap: 0px;
+			//font-size: 10px;
+        }
+        .info {
+			width: 80%;
+			margin: 40px auto;
+			text-align: left;
+			line-height: 1.5;
+        }
+		.labels {
+			width: 30%;
+			background-color: lightgray;
+			margin: 0 auto;
+			padding: 14px 0;
+			border-radius: 20px 20px 0 0;
+			text-align: center;
+			font-weight: bold;
+		}
+		.author {
+			color: lightgray;
+		}
+		.buttons {
+			width: 80%;
+			background-color: lightgray;
+			margin: 0 auto;
+			padding: 14px 0;
+		}		
+		.description {
+			display: inline-block;
+			background-color: white;
+			color: black;
+			margin: 14px auto;
+			padding: 4px;
+			border-radius: 6px;			
+		}		
+		.tower {
+            width: 30%;
+            border: 1px solid #000;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+		.numIns {
+            width: 5%;
+            border: 1px solid #000;
+			border-left: none;
+            color: silver;
+			background-color: #FFF;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .elevator {
+			width: 30%;
+            border: 1px solid #FFF;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+		.numDat {
+            width: 5%;
+            border: 1px solid #000;
+			border-right: none;
+            color: silver;
+            background-color: #FFF;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .floor {
+            height: 50px;
+            border: 1px solid #000;
+            font-size: 14px;	
+			line-height: 0.8;
+			display: flex;
+			flex-direction: column;
+			justify-content: center; 			
+			align-items: center; 	
+        }
+        .floor2 {
+            height: 50px; 
+            border: 1px solid #FFF;
+            font-size: 14px;
+			line-height: 0.8;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;        
+		}
+        .highlight {
+            color: black;
+			background-color: lightgray;
+			border: 1px solid black;
+        }
+        .highlight2 {
+            color: black;
+			background-color: lightgray;
+			border: 2px solid black;
+        }
+        input {
+            width: 80%;
+            height: 60%;
+            text-align: center;
+            font-size: 20px;
+        }
+		textarea {
+            width: 80%;
+            height: 60%;
+			resize: none;
+			border: 1px solid #000;
+			font-size: 14px;
+			line-height: 1.2;
+			padding: 4px;
+			background-color: black;
+			color: white;
+		}
+    </style>
+
+</head>
+
+<body>
+    
+	<h1 style="margin: 0 auto">The Computing Elevator</h1>
+	<h3>"Floor-Level Programming"</h3>
+	<small class="author">by Mr. Piay – v1.0</small>
+	
+	<!-- Labels -->
+	<div class="container" >
+		<div class ="labels">INSTRUCTIONS</div>
+		<div style="width: 5%;"></div>
+		<div style="width: 30%;"></div>
+		<div style="width: 5%;"></div>
+		<div class ="labels">DATA</div>
+	</div>
+
+	<!-- Towers -->
+	<div class="container">
+		<div id="instructionsTower" class="tower"></div>
+		<div id="numIns" class="numIns"></div>
+		<div id="elevatorTower" class="elevator"></div>
+		<div id="numDat" class="numDat"></div>
+		<div id="dataTower" class="tower"></div>
+	</div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+        <select id="speed">
+            <option value="normalSpeed">Normal speed</option>
+            <option value="topSpeed">Top speed</option>
+        </select>
+        <button id="step" onclick="step()">STEP</button>
+        <button id="run" onclick="auto()">RUN</button>
+		<button id="stop" onclick="stop()">STOP</button>
+		<button id="reset" onclick="reset()">RESET</button>
+		<button id="clear" onclick="clearInputs()">CLEAR</button>
+		<div>
+			<p class="description" id="description"></p>
+		</div>
+		<button id="load" onclick="loadProgramFromFile()">LOAD</button>
+        <select id="examples">
+            <option value="your">Your program...</option>
+        </select>
+		<button id="save" onclick="save()">SAVE</button>
+    </div>
+    
+    <!-- Description -->
+	<div class="info">
+		<p>
+			The <strong>Computing Elevator</strong> is a a unique and engaging web-based educational tool designed 
+			to introduce the basics of computer architecture and programming logic through a visual and interactive experience.</p>
+			
+		<p>
+			The simulator represents a minimal computer architecture illustrated as <strong>twin towers</strong> (representing the memory)
+			connected by an <strong>elevator</strong> (representing the CPU).
+		</p>
+		<ul>
+			<li>
+				A <strong>program</strong> consists of instructions and data written on the corresponding floors.
+			</li>
+			<li>
+				The <strong>CPU</strong> is visualised as an elevator moving between floors, following the 
+				<strong>fetch-decode-execute</strong> cycle.
+			</li>
+			<li>
+				The elevator displays the value of the <strong>accumulator</strong> register (ACC) as each instruction
+				is processed.
+			</li>
+			<li>
+				Programs always start at instruction floor <strong>0</strong> and proceed <strong>sequentially</strong>
+				unless a jump instruction is found.
+			</li>
+			<li>
+				The internal <strong>program counter</strong> (PC) is updated automatically 
+				and indicates the next instruction floor where the elevator will stop.
+			</li>
+ 			<li>
+				In addition to <strong>direct addressing</strong> mode, where instructions directly reference 
+				a specific data floor, <strong>indexed addressing</strong> is also supported. 
+				Instructions in the format <strong>7X</strong> perform the same operation as instructions 
+				in the format <strong>0X</strong>, but the data floor is calculated as <strong>X + Data[9]</strong>.
+				If data floor 9 (the <strong>index register</strong>) is 0 or empty, the instruction <strong>7X</strong> behaves as instruction <strong>7</strong> 
+				(see Example 11).
+			</li>
+		</ul>
+		<p>
+			The Computing Elevator supports instructions encoded with one or two denary digits, as defined in its <strong>Instruction Set</strong>, 
+			emulating a machine code programming language. With only 10 instruction and data floors available, 
+			it encourages users to get creative, designing their own problems and solving them efficiently, like generating 
+			a full Fibonacci sequence in just 9 instructions (see Example 10).<p>
+		</p>
+		<p>
+			Users can design their own programs by entering instructions and data on the respective floors. 
+			These programs can be <strong>saved</strong> to a JSON file and <strong>loaded</strong> later, facilitating sharing and experimentation.
+		</p>
+
+	</div>
+	
+    <!-- Instruction Set -->
+	<code>
+	<div class="info">
+		<div id="instructionSet">
+			<h2>Instruction Set</h2>
+			<h3>Memory & Arithmetic</h3>
+			<table border="1" cellspacing="0" cellpadding="6" style="width:100%; border-collapse: collapse;">
+				<thead style="background-color: lightgray;">
+					<tr>
+						<th style="width:5%">Code</th>
+						<th style="width:30%">Instruction</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>0X</td>
+						<td>ACC &larr; DATA[X]</td>
+						<td>Copy the value stored on data floor X into the elevator</td>
+					</tr>
+					<tr>
+						<td>1X</td>
+						<td>ACC &larr; ACC + DATA[X]</td>
+						<td>Add the value stored on data floor X to the elevator</td>
+					</tr>
+					<tr>
+						<td>2X</td>
+						<td>ACC &larr; ACC - DATA[X]</td>
+						<td>Subtract the value stored on data floor X from the elevator</td>
+					</tr>
+					<tr>
+						<td>3X</td>
+						<td>X &larr; ACC</td>
+						<td>Copy the value from the elevator into data floor X</td>
+					</tr>
+					<tr>
+						<td>7X</td>
+						<td>ACC &larr; DATA[X + DATA[9]]</td>
+						<td>Copy the value stored on data floor (X + DATA[9]) into the elevator (indexed addressing)</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>Program Flow</h3>
+			<table border="1" cellspacing="0" cellpadding="6" style="width:100%; border-collapse: collapse;">
+				<thead style="background-color: lightgray;">
+					<tr>
+						<th style="width:5%">Code</th>
+						<th style="width:30%">Instruction</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>4X</td>
+						<td>PC &larr; X</td>
+						<td>Go to instruction floor X</td>
+					</tr>
+					<tr>
+						<td>5X</td>
+						<td>IF ACC &equals; 0 THEN PC &larr; X</td>
+						<td>If the elevator value is 0, go to instruction floor X</td>
+					</tr>
+					<tr>
+						<td>6X</td>
+						<td>IF ACC &lt; 0 THEN PC &larr; X</td>
+						<td>If the elevator value is less than 0, go to instruction floor X</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>Input/Output</h3>
+			<table border="1" cellspacing="0" cellpadding="6" style="width:100%; border-collapse: collapse;">
+				<thead style="background-color: lightgray;">
+					<tr>
+						<th style="width:5%">Code</th>
+						<th style="width:30%">Instruction</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>7</td>
+						<td>ACC &larr; INPUT</td>
+						<td>Copy the value entered by the user into the elevator</td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td>OUTPUT &larr; ACC</td>
+						<td>Copy the value from the elevator into the output</td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>STOP</td>
+						<td>Stop the program</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</code>
+    
+	<script>
+		
+		let size = 10;
+		let input = [];
+		let output = [];
+		let elevator = 0;
+		let pc = 0;
+		let speedStop = [500, 0];
+		let speedMove = [100, 0];
+		let indexSpeed = 0;
+		let stepMode = false;
+		let stopRequested = false;
+		
+		let program = {
+			name: "",
+			instructions: [],
+			data: [],
+			description: ""
+		};
+		
+		const examples = {
+			example1: {
+				name: "Example 1",
+				instructions: ['8', '10', '40'],
+				data: ['1'],
+				description: "Output a counter (0, 1, 2, 3, ...)"
+			},
+			example2: {
+				name: "Example 2",
+				instructions: ['8', '10', '30', '40'],
+				data: ['2'],
+				description: "Output the powers of 2 (0, 2, 4, 8, ...)"
+			},
+			example3: {
+				name: "Example 3",
+				instructions: ['00', '8', '21', '65', '41', '9'],
+				data: ['9', '1'],
+				description: "Output a countdown (9, 8, ... , 0)"
+			},
+			example4: {
+				name: "Example 4",
+				instructions: ['7', '54', '00', '45', '01', '8', '40'],
+				data: ['0', '1'],
+				description: "Output NOT input (0/1)"
+			},
+			example5: {
+				name: "Example 5",
+				instructions: ['7', '53', '7', '8', '9'],
+				data: [],
+				description: "Output first input (0/1) AND second input (0/1)"
+			},
+			example6: {
+				name: "Example 6",
+				instructions: ['7', '53', '44', '7', '8', '9'],
+				data: [],
+				description: "Output first input 1 (0/1) OR second input (0/1)"
+			},
+			example7: {
+				name: "Example 7",
+				instructions: ['7', '39', '7', '38', '09', '28', '8', '9'],
+				data: [],
+				description: "Output first input - second input"
+			},
+			example8: {
+				name: "Example 8",
+				instructions: ['01', '58', '23', '31', '02', '10', '32', '40', '9'],
+				data: ['7', '5', '0', '1'],
+				description: "D[2] = D[0] × D[1]"
+			},
+			example9: {
+				name: "Example 9",
+				instructions: ['00', '21', '68', '30', '02', '13', '32', '40', '9'],
+				data: ['10', '3', '0', '1'],
+				description: "D[0] / D[1], Q = D[2], R = D[0]"
+			},
+			example10: {
+				name: "Example 10",
+				instructions: ['00', '8', '01', '32', '10', '31', '02', '30', '40'],
+				data: ['0', '1'],
+				description: "Output the Fibonacci sequence"
+			},
+			example11: {
+				name: "Example 11",
+				instructions: ['70', '8', '09', '18', '39', '27', '58', '40', '9'],
+				data: ['6', '5', '4', '3', '2', '1', '0', '7', '1', '0'],
+				description: "Output D[0] to D[6]"
+			},
+			example12: {
+				name: "Example 1",
+				instructions: ['49', '', '', '', '', '', '', '', '', '40'],
+				data: [],
+				description: "Stop at floor 0 or 9 (top speed)"
+			},
+		};
+
+		// Set up the select speed element
+		const selSpeed = document.getElementById("speed");
+		selSpeed.addEventListener("change", () => {
+			indexSpeed = selSpeed.selectedIndex;
+		});
+
+		// Set up the select program element
+		const selExample = document.getElementById("examples");
+		selExample.addEventListener("change", selectExample);
+		
+		// Add examples
+		const selectElement = document.getElementById('examples');
+		// Iterate over the examples object and create options dynamically
+		for (const key in examples) {
+			if (examples.hasOwnProperty(key)) {
+				const example = examples[key];
+
+				// Create the option element
+				const option = document.createElement('option');
+				option.value = key;
+				option.textContent = `${example.name}: ${example.description}`;
+
+				if (key === 'example1') {
+					option.selected = true;
+				}
+
+				// Append the option to the select element
+				selectElement.appendChild(option);
+			}
+		}
+		
+		// Create towers + elevator
+		function cretaeTowersElevator() {
+			// Get towers
+			const instructionsTower = document.getElementById('instructionsTower');
+			const dataTower = document.getElementById('dataTower');
+			const elevatorTower = document.getElementById('elevatorTower');
+
+			// Create input floor
+			const inputFloor = document.createElement('div');
+			const inputElement = document.createElement('textarea');
+			inputFloor.classList.add('floor');
+			inputElement.id = 'input';
+			inputElement.readOnly = true;
+			inputElement.value = `INPUTS:\n`;
+			inputFloor.appendChild(inputElement);
+			instructionsTower.appendChild(inputFloor);
+
+			// Create instruction floors
+			for (let i = 0; i < size; i++) {
+				const instructionFloor = document.createElement('div');
+				const inputElement = document.createElement('input');
+				instructionFloor.classList.add('floor');
+				instructionFloor.appendChild(inputElement);
+				instructionsTower.appendChild(instructionFloor);
+			}
+
+			// Create instruction num
+			for (let i = 0; i < size + 1; i++) {
+				const indexFloor = document.createElement('div');
+				indexFloor.classList.add('floor');
+				indexFloor.innerText = i - 1;
+				numIns.appendChild(indexFloor);
+			}
+
+			// Create elevator floors
+			for (let i = 0; i < size + 1; i++) {
+				const elevatorFloor = document.createElement('div');
+				elevatorFloor.classList.add('floor2');
+				elevatorFloor.id = `elevator-${i}`;
+				elevatorTower.appendChild(elevatorFloor);
+			}
+
+			// Create data num
+			for (let i = 0; i < size + 1; i++) {
+				const indexFloor = document.createElement('div');
+				indexFloor.classList.add('floor');
+				indexFloor.innerText = i - 1;
+				numDat.appendChild(indexFloor);
+			}
+
+			// Create output floor
+			const outputFloor = document.createElement('div');
+			const outputElement = document.createElement('textarea');
+			outputFloor.classList.add('floor');
+			outputElement.id = 'output';
+			outputElement.readOnly = true;
+			outputElement.value = `OUTPUTS:\n`;
+			outputFloor.appendChild(outputElement);
+			dataTower.appendChild(outputFloor);
+
+			// Create data floors
+			for (let i = 0; i < size; i++) {
+				const dataFloor = document.createElement('div');
+				const inputElement = document.createElement('input');
+				dataFloor.classList.add('floor');
+				inputElement.id = `data-${i}`;
+				dataFloor.appendChild(inputElement);
+				dataTower.appendChild(dataFloor);
+			}
+		}
+		
+		// Clear instructions and data
+		function clearInputs() {
+			inputInsElements.forEach(input => {
+				input.value = '';
+			});
+
+			inputDatElements.forEach(input => {
+				input.value = '';
+			});
+		}
+
+		// Reset computer
+		function reset() {
+			pc = 0;
+			elevator = 0;
+			moveElevator(1, 'ins');
+			input = [];
+			output = [];
+			document.getElementById('input').value = `INPUTS:\n`;
+			document.getElementById('output').value = `OUTPUTS:\n`;
+			loadInsDat();
+		}
+
+		// Load instructions and data from program
+		function loadInsDat() {
+			// Update instruction inputs
+			inputInsElements.forEach((input, index) => {
+				input.value =  program.instructions[index] !== undefined ? program.instructions[index] : '';
+			});
+
+			// Update data inputs
+			inputDatElements.forEach((input, index) => {
+				input.value = program.data[index] !== undefined ? program.data[index] : '';
+			});
+		}
+		
+		// Select an example
+		function selectExample() {
+			const selected = document.getElementById('examples').value;
+			if (selected == "your") {
+				document.getElementById("save").disabled = false;
+				document.getElementById("load").disabled = false;
+			}
+			else {
+				document.getElementById("save").disabled = true;
+				document.getElementById("load").disabled = true;
+			}
+			const example = examples[selected];
+			if (!example) return;
+			loadProgram(example);
+		}
+
+		// Load a program
+		function loadProgram(theProgram) {
+			program.name = theProgram.name;
+			program.instructions = theProgram.instructions;
+			program.data = theProgram.data;
+			program.description = theProgram.description;
+
+			const description = document.getElementById("description");
+			description.innerHTML = `${program.name}: ${program.description}`;
+
+			reset();
+		}
+
+		// Load a program from file system
+		function loadProgramFromFile() {
+			const input = document.createElement("input");
+			input.type = "file";
+			input.accept = ".json";
+			input.onchange = (event) => {
+				const file = event.target.files[0];
+				if (file) {
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						try {
+							const yourProgram = JSON.parse(e.target.result);
+							loadProgram(yourProgram);
+						} catch (error) {
+							alert("Invalid JSON file.");
+						}
+					};
+					reader.readAsText(file);
+				}
+			};
+			input.click();
+		}
+
+		// Save a program to file system
+		function save() {
+			const instructions = Array.from(inputInsElements).map(input => input.value);
+			const data = Array.from(inputDatElements).map(input => input.value);
+
+			let name = "";
+			while (!name || !/^[a-zA-Z0-9_\s]+$/.test(name)) {
+				name = prompt("Enter a valid name for this program:");
+				if (name === null) {
+					// User canceled the prompt
+					return;
+				}
+			}
+
+			const description = prompt("Enter a description for this program:");
+			if (description === null) {
+				// User canceled the prompt
+				return;
+			}
+
+			const yourProgram = {
+				name: name,
+				instructions: instructions,
+				data: data,
+				description: description
+			};
+
+			const jsonString = JSON.stringify(yourProgram, null, 2);
+			const blob = new Blob([jsonString], { type: "application/json" });
+			const url = URL.createObjectURL(blob);
+
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = `${name}.json`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		}
+
+		// Move elevator to instruction or data floor 
+		async function moveElevator(floor, insdat) {
+			let elevatorFloors = document.querySelectorAll('#elevatorTower .floor2');
+			let currentPosition = Array.from(elevatorFloors).findIndex(floor => floor.classList.contains('highlight2'));
+
+			// If no floor is highlighted, start from floor 0
+			if (currentPosition === -1) {
+				currentPosition = 0;
+			}
+
+			// Do not highlight instruction and data floor number
+			document.querySelectorAll('#numIns .floor').forEach(floor => floor.classList.remove('highlight'));
+			document.querySelectorAll('#numDat .floor').forEach(floor => floor.classList.remove('highlight'));
+
+			// Highlight instruction or data floor number
+			if (insdat === "ins") {
+				document.querySelectorAll('#numIns .floor')[floor].classList.add('highlight');
+			}
+			else if (insdat === "dat") {
+				document.querySelectorAll('#numDat .floor')[floor].classList.add('highlight');
+			}
+
+			//Stop elevator for a while
+			await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+
+			// Do not highlight elevator
+			elevatorFloors.forEach(floor => floor.classList.remove('highlight2'));
+
+			// Update elevator content
+			updateElevator(currentPosition);
+
+			// Move the elevator floor by floor
+			while (currentPosition !== floor) {
+				if (currentPosition < floor) {
+					currentPosition++;
+				} else {
+					currentPosition--;
+				}
+
+				// Highlight elevator
+				elevatorFloors[currentPosition].classList.add('highlight2');
+
+				// Update elevator content
+				updateElevator(currentPosition);
+
+				// Stop elevator for a while
+				await new Promise(resolve => setTimeout(resolve, speedMove[indexSpeed]));
+
+				// Do not highlight elevator
+				elevatorFloors[currentPosition].classList.remove('highlight2');
+			}
+
+			// Highlight elevator
+			elevatorFloors[floor].classList.add('highlight2');
+		}
+
+		// Update elevator content
+		function updateElevator(floor) {
+			// Clear elevator content
+			const elevatorFloors = document.querySelectorAll('#elevatorTower .floor2');
+			elevatorFloors.forEach(floor => floor.innerText = '');
+
+			// Update elevator content
+			const elevatorFloor = document.getElementById(`elevator-${floor}`);
+			elevatorFloor.innerHTML = `<strong>ELEVATOR</strong><br><code>${elevator}</code>`;
+		}
+
+		// Update input and output displays
+		function update() {
+			// Reverse input and output arrays
+			const reversedInput = input.slice().reverse();
+			const reversedOutput = output.slice().reverse();
+
+			// Concatenate inputs and outputs into single strings
+			const inputList = input.length > 0 ? reversedInput.join('\n') : '';
+			const outputList = output.length > 0 ? reversedOutput.join('\n') : '';
+
+			// Update input display
+			document.getElementById('input').value = `INPUTS:\n${inputList}`;
+
+			// Update output display
+			document.getElementById('output').value = `OUTPUTS:\n${outputList}`;
+		}
+
+		// Check if an input is valid
+		function isValidInput(value) {
+			return (/^\d+$/.test(value));
+		}
+		
+		// Execute program
+		async function executeProgram() {
+			// Disable inputs
+			inputInsElements.forEach(input => input.disabled = true);
+			inputDatElements.forEach(input => input.disabled = true);
+
+			// Validate instructions and data
+			for (let i = 0; i < inputInsElements.length; i++) {
+				const val = inputInsElements[i].value;
+				if (
+					val === '' ||
+					/^[89]$/.test(val) ||
+					/^7[0-9]?$/.test(val) ||
+					/^[0-6][0-9]$/.test(val)
+				) continue;
+				else {
+					alert(`Invalid instruction on floor ${i}.`);
+					finalizeRun();
+					return;
+				}
+			}
+			for (let i = 0; i < inputDatElements.length; i++) {
+				const val = inputDatElements[i].value;
+				if (val === '' || /^\d+$/.test(val)) continue;
+				else {
+					alert(`Invalid data on floor ${i}.`);
+					finalizeRun();
+					return;
+				}
+			}
+
+			// Read instructions and data
+			instructions = Array.from(inputInsElements).map(input => input.value);
+			data = Array.from(inputDatElements).map(input => Number(input.value));
+
+			stopRequested = false;
+
+			while (!stopRequested) {
+				const instr = instructions[pc];
+				const command = instr[0];
+				let operand = parseInt(instr[1]);
+
+				// Send elevator to instruction floor
+				await moveElevator(pc + 1, "ins");
+				await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+					
+				// Execute the instruction
+				switch (command) {
+					case '0': // LDD
+					case '1': // ADD
+					case '2': // SUB
+
+						const dataInput = inputDatElements[operand];
+
+						// Send elevator to data floor
+						await moveElevator(operand + 1, "dat");
+
+						// Check data value is valid
+						if (!dataInput || dataInput.value === '' || isNaN(dataInput.value)) {
+							alert(`Data at floor ${operand} is not a valid number.`);
+							finalizeRun();
+							return;
+						}
+
+						// Stop elevator for a while
+						await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+
+						let dataValue = parseInt(dataInput.value, 10);
+			
+						// Update elevator
+						switch (command) {
+							case '0': // LOAD
+								elevator = dataValue;
+								break;
+							case '1': // ADD
+								elevator += dataValue;
+								break;
+							case '2': // SUB
+								elevator -= dataValue;
+								break;
+						}
+
+						// Update elevator content
+						updateElevator(operand + 1);
+						break;
+					case '3': // STO
+						// Send elevator to data floor
+						await moveElevator(operand + 1, "dat");
+						// Stop elevator for a while
+						await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+						// Update data floor
+						inputDatElements[operand].value = elevator;
+						break;
+					case '4': // JPA
+						// Change PC
+						pc = operand;
+						// Send elevator to instruction floor
+						await moveElevator(pc + 1, "ins");
+						// Stop elevator for a while
+						await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+						break;
+					case '5': // JPZ
+						// Change PC
+						if (elevator === 0) {
+							pc = operand;
+						}
+						else {
+							pc = (pc + 1) % 10;
+						}
+						// Send elevator to instruction floor
+						await moveElevator(pc + 1, "ins");
+						// Stop elevator for a while
+						await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+						break;
+					case '6': // JPN
+						// Change PC
+						if (elevator < 0) {
+							pc = operand;
+						}
+						else {
+							pc = (pc + 1) % 10;
+						}
+						// Send elevator to instruction floor
+						await moveElevator(pc + 1, "ins");
+						// Stop elevator for a while
+						await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed])); // Wait before next instruction
+						break;
+					case '7': // INP or LDX
+						let userInput;
+						// If instructon is '7'
+						if (instr.length === 1) {
+							// Repeat input until a number is entered
+							do {
+								userInput = prompt("Enter a positive integer number:");
+								// If user cancelled
+								if (userInput === null) {
+									finalizeRun();
+									return;
+								}
+							} while (!isValidInput(userInput))
+							// Add input to list of inputs
+							input.push(parseInt(userInput));
+							// Send elevator to input floor
+							await moveElevator(0, "ins");
+							// Stop elevator for a while
+							await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+							// Update elevator
+							elevator = parseInt(userInput);
+							// Update elevator content
+							updateElevator(0);
+							// Update input and output displays
+							update();
+							break;
+						}
+						// If instructon is '7X'
+						else {
+							// Effective address (indexed addressing mode)
+							operand = (operand + parseInt(inputDatElements[9].value)) % 10;
+							const dataInput = inputDatElements[operand];
+							// Send elevator to data floor
+							await moveElevator(operand + 1, "dat");
+							// Check data value is valid
+							if (!dataInput || dataInput.value === '' || isNaN(dataInput.value)) {
+								alert(`Data at floor ${operand} is not a valid number.`);
+								finalizeRun();
+								return;
+							}
+
+							let dataValue = parseInt(dataInput.value, 10);
+							// Stop elevator for a while
+							await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+							// Update elevator
+							elevator = dataValue;
+							// Update elevator content
+							updateElevator(operand + 1);
+							break;
+						}
+					case '8': // OUT
+						// Add elevator to list of outputs
+						output.push(elevator);
+						// Send elevator to output floor
+						await moveElevator(0, "dat");
+						// Stop elevator for a while
+						await new Promise(resolve => setTimeout(resolve, speedStop[indexSpeed]));
+						// Update input and output displays
+						update();
+						break;
+					case '9': // HLT
+						finalizeRun();
+						return;
+					default:
+						alert(`Invalid instruction on floor ${pc}.`);
+						finalizeRun();
+						return;
+				}
+
+				// Proceed to next instruction
+				if (!"456".includes(command)) {
+					pc = (pc + 1) % 10;
+				}
+
+				if (stepMode) {
+					document.getElementById("run").disabled = false;
+					document.getElementById("step").disabled = false;
+					document.getElementById("examples").disabled = false;
+					break;
+				}
+			}
+
+			finalizeRun();
+		}
+
+		function run(step) {
+			document.getElementById("step").disabled = true;
+			document.getElementById("run").disabled = true;
+			document.getElementById("reset").disabled = true;
+			document.getElementById("clear").disabled = true;
+			document.getElementById("examples").disabled = true;
+			document.getElementById("save").disabled = true;
+			document.getElementById("load").disabled = true;
+			stopRequested = false;
+			stepMode = step;
+			executeProgram();
+		}
+
+		function auto() {
+			run(false);
+		}
+
+		function step() {
+			run(true);
+		}
+	 
+		function stop() {
+			stopRequested = true;
+		}
+
+		function finalizeRun() {
+			document.querySelectorAll('#instructionsTower input').forEach(input => input.disabled = false);
+			document.querySelectorAll('#dataTower input').forEach(input => input.disabled = false);
+			document.getElementById("step").disabled = false;
+			document.getElementById("run").disabled = false;
+			document.getElementById("reset").disabled = false;
+			document.getElementById("clear").disabled = false;
+			document.getElementById("examples").disabled = false;
+			if (document.getElementById("examples").value == "your") {
+				document.getElementById("save").disabled = false;
+				document.getElementById("load").disabled = false;
+			}
+		}
+
+		cretaeTowersElevator();
+		const inputInsElements = document.querySelectorAll('#instructionsTower input');
+		const inputDatElements = document.querySelectorAll('#dataTower input');
+		moveElevator(1, "");
+		selectExample();
+
+	</script>
+	
+</body>
+</html>
