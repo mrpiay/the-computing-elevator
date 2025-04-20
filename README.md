@@ -1,4 +1,4 @@
-The **Computing Elevator** is a unique and engaging web-based educational tool designed to introduce the basics of computer architecture and programming logic through a visual and interactive experience.
+The **Computing Elevator** is a unique and engaging web-based educational tool designed to introduce the basics of computer architecture and low-level programming through a visual and interactive experience.
 
 The simulator represents a minimal computer architecture illustrated as **twin towers** (representing the memory) connected by an **elevator** (representing the CPU).
 
