@@ -40,4 +40,9 @@ Users can design their own programs by entering instructions and data on the res
 |------|-------------------|--------------------------------------------------|
 | 7    | ACC ← INPUT       | Copy the value entered by the user into the elevator |
 | 8    | OUTPUT ← ACC      | Copy the value from the elevator into the output |
+
+### Other
+
+| Code | Instruction       | Description                                      |
+|------|-------------------|--------------------------------------------------|
 | 9    | STOP              | Stop the program                                |
