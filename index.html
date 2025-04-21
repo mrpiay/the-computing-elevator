@@ -990,13 +990,13 @@
 						// Update input and output displays
 						update();
 						break;
-					case '9': // HLT
+					case '9': // HLT or PAGE
 						// If instructon is '9'
 						if (instr.length === 1) {
 							finalizeRun();
 							return;
 						}
-						// If instructon is '90' or '91'
+						// If instructon is '9X'
 						else {
 							page = parseInt(instr[1]);
 							break;
