@@ -26,6 +26,14 @@
 			text-align: left;
 			line-height: 1.5;
         }
+        .newinfo {
+			background-color: lightgray;
+			width: 80%;
+			margin: 40px auto;
+			text-align: left;
+			line-height: 1.5;
+			padding: 14px;
+        }
 		.labels {
 			width: 30%;
 			background-color: lightgray;
@@ -137,7 +145,7 @@
     
 	<h1 style="margin: 0 auto">The Computing Elevator</h1>
 	<h3>"Floor-Level Programming"</h3>
-	<small class="author">by Mr. Piay – v1.0</small>
+	<small class="author">by Mr. Piay – v2.0</small>
 	
 	<!-- Labels -->
 	<div class="container" >
@@ -212,14 +220,14 @@
 				In addition to <strong>direct addressing</strong> mode, where instructions directly reference 
 				a specific data floor, <strong>indexed addressing</strong> is also supported. 
 				Instructions in the format <strong>7X</strong> perform the same operation as instructions 
-				in the format <strong>0X</strong>, but the data floor is calculated as <strong>X + Data[9]</strong>.
-				If data floor 9 (the <strong>index register</strong>) is 0 or empty, the instruction <strong>7X</strong> behaves as instruction <strong>7</strong> 
+				in the format <strong>0X</strong>, but the data floor is calculated as <strong>X + Data[0]</strong>.
+				If data floor 0 (the <strong>index register</strong>) is 0 or empty, the instruction <strong>7X</strong> behaves as instruction <strong>7</strong> 
 				(see Example 11).
 			</li>
 		</ul>
 		<p>
 			The Computing Elevator supports instructions encoded with one or two denary digits, as defined in its <strong>Instruction Set</strong>, 
-			emulating a machine code programming language. With only 10 instruction and data floors available, 
+			emulating a machine code programming language. With only 10 instruction and data floors available by default, 
 			it encourages users to get creative, designing their own problems and solving them efficiently, like generating 
 			a full Fibonacci sequence in just 9 instructions (see Example 10).<p>
 		</p>
@@ -227,7 +235,35 @@
 			Users can design their own programs by entering instructions and data on the respective floors. 
 			These programs can be <strong>saved</strong> to a JSON file and <strong>loaded</strong> later, facilitating sharing and experimentation.
 		</p>
-
+	</div>
+	<div class="newinfo">
+		<p>
+			<strong>New feature in v2.0</strong>
+		</p>
+		<p>
+			The Computing Elevator <strong>v2.0</strong> introduces a new feature called <strong>Paging</strong> which 
+			allows users to extend the addressable memory space beyond the initial 
+			10 floors, enabling more complex and creative programming challenges. 
+		</p>
+		<p>
+			Paging divides the memory into multiple blocks or pages, <strong>each containing 10 floors</strong>. 
+			This feature is implemented through the new <strong>9X</strong> instruction, which allows 
+			selecting the current page:
+		</p>
+		<p>
+			<strong>90</strong>: Page 0 (floors 0-9)<br>
+			<strong>91</strong>: Page 1 (floors 10-19)<br>
+			...<br>
+			<strong>99</strong>: Page 9 (floors 90-99)
+		</p>
+		<p>
+			With paging, the second digit of an instruction (<strong>X</strong>) refers to a floor within the current
+			page (block of 10 floors). Additionally, the index register has been moved to floor 0 (it was floor 9 in v-1.0.)
+		</p>
+		<p>
+			To set the number of pages used in the simulator, add <strong>?blocks=n</strong> 
+			to the URL, where <strong>n</strong> should be a number between 1 and 10. 
+			If this parameter is not added, the simulator will default to 1 page (10 floors). 
 	</div>
 	
     <!-- Instruction Set -->
@@ -267,8 +303,8 @@
 					</tr>
 					<tr>
 						<td>7X</td>
-						<td>ACC &larr; DATA[X + DATA[9]]</td>
-						<td>Copy the value stored on data floor (X + DATA[9]) into the elevator (indexed addressing)</td>
+						<td>ACC &larr; DATA[X + DATA[0]]</td>
+						<td>Copy the value stored on data floor (X + DATA[0]) into the elevator (indexed addressing)</td>
 					</tr>
 				</tbody>
 			</table>
@@ -336,6 +372,11 @@
 						<td>STOP</td> 
 						<td>Stop the program</td>
 					</tr>
+					<tr>
+						<td>9X</td>
+						<td>PAGE X</td>
+						<td>Switch to block X</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -344,7 +385,11 @@
     
 	<script>
 		
-		let size = 10;
+		const urlParams = new URLSearchParams(window.location.search);
+		const pageParam = urlParams.get('blocks');
+		const numPages = pageParam ? Math.max(1, Math.min(10, parseInt(pageParam))) : 1;
+		const size = numPages * 10; // Calculate the total number of floors
+
 		let input = [];
 		let output = [];
 		let elevator = 0;
@@ -425,9 +470,9 @@
 			},
 			example11: {
 				name: "Example 11",
-				instructions: ['70', '8', '09', '18', '39', '27', '58', '40', '9'],
-				data: ['6', '5', '4', '3', '2', '1', '0', '7', '1', '0'],
-				description: "Output D[0] to D[6]"
+				instructions: ['71', '8', '00', '18', '30', '27', '58', '40', '9'],
+				data: ['0', '5', '4', '3', '2', '1', '0', '6', '1'],
+				description: "Output D[1] to D[6] using indexed addressing"
 			},
 			example12: {
 				name: "Example 12",
@@ -766,8 +811,9 @@
 				const val = inputInsElements[i].value;
 				if (
 					val === '' ||
-					/^[89]$/.test(val) ||
+					/^[8]$/.test(val) ||
 					/^7[0-9]?$/.test(val) ||
+					/^9[0-9]?$/.test(val) ||
 					/^[0-6][0-9]$/.test(val)
 				) continue;
 				else {
@@ -792,10 +838,12 @@
 
 			stopRequested = false;
 
+			let page = 0;
+			
 			while (!stopRequested) {
 				const instr = instructions[pc];
 				const command = instr[0];
-				let operand = parseInt(instr[1]);
+				let operand = parseInt(instr[1]) + 10*page;
 
 				// Send elevator to instruction floor
 				await moveElevator(pc + 1, "ins");
@@ -862,7 +910,7 @@
 							pc = operand;
 						}
 						else {
-							pc = (pc + 1) % 10;
+							pc = (pc + 1) % size;
 						}
 						// Send elevator to instruction floor
 						await moveElevator(pc + 1, "ins");
@@ -875,7 +923,7 @@
 							pc = operand;
 						}
 						else {
-							pc = (pc + 1) % 10;
+							pc = (pc + 1) % size;
 						}
 						// Send elevator to instruction floor
 						await moveElevator(pc + 1, "ins");
@@ -912,7 +960,7 @@
 						// If instructon is '7X'
 						else {
 							// Effective address (indexed addressing mode)
-							operand = (operand + parseInt(inputDatElements[9].value)) % 10;
+							operand = (operand + parseInt(inputDatElements[0].value)) % size;
 							const dataInput = inputDatElements[operand];
 							// Send elevator to data floor
 							await moveElevator(operand + 1, "dat");
@@ -943,8 +991,16 @@
 						update();
 						break;
 					case '9': // HLT
-						finalizeRun();
-						return;
+						// If instructon is '9'
+						if (instr.length === 1) {
+							finalizeRun();
+							return;
+						}
+						// If instructon is '90' or '91'
+						else {
+							page = parseInt(instr[1]);
+							break;
+						}
 					default:
 						alert(`Invalid instruction on floor ${pc}.`);
 						finalizeRun();
@@ -953,7 +1009,7 @@
 
 				// Proceed to next instruction
 				if (!"456".includes(command)) {
-					pc = (pc + 1) % 10;
+					pc = (pc + 1) % size;
 				}
 
 				if (stepMode) {
