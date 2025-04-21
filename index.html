@@ -649,6 +649,18 @@
 			program.data = theProgram.data;
 			program.description = theProgram.description;
 
+			const maxFloors = Math.max(program.instructions.length, program.data.length);
+			const blocksNeeded = Math.ceil(maxFloors / 10);
+
+			if (maxFloors > size) {
+				alert(`This program requires ${blocksNeeded} blocks.\nInclude "?blocks=${blocksNeeded}" at the end of the URL.`);
+				// Automatically select Example 1
+				const exampleSelect = document.getElementById('examples');
+				exampleSelect.value = 'example1';
+				selectExample();				
+				return;
+			}
+
 			const description = document.getElementById("description");
 			description.innerHTML = `${program.name}: ${program.description}`;
 
