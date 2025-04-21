@@ -374,7 +374,7 @@
 					</tr>
 					<tr>
 						<td>9X</td>
-						<td>PAGE X</td>
+						<td>SET PAGE TO X</td>
 						<td>Switch to block X</td>
 					</tr>
 				</tbody>
@@ -412,73 +412,79 @@
 				name: "Example 1",
 				instructions: ['8', '10', '40'],
 				data: ['1'],
-				description: "Output a counter (0, 1, 2, 3, ...)"
+				description: "OUTPUT = 0, 1, 2, 3, ..."
 			},
 			example2: {
 				name: "Example 2",
 				instructions: ['8', '10', '30', '40'],
 				data: ['2'],
-				description: "Output the powers of 2 (0, 2, 4, 8, ...)"
+				description: "OUTPUT = 0, 2, 4, 8, ..."
 			},
 			example3: {
 				name: "Example 3",
 				instructions: ['00', '8', '21', '65', '41', '9'],
 				data: ['9', '1'],
-				description: "Output a countdown (9, 8, ... , 0)"
+				description: "OUTPUT = 9, 8, ... , 0"
 			},
 			example4: {
 				name: "Example 4",
 				instructions: ['7', '54', '00', '45', '01', '8', '40'],
 				data: ['0', '1'],
-				description: "Output NOT input (0/1)"
+				description: "OUTPUT = NOT INPUT"
 			},
 			example5: {
 				name: "Example 5",
 				instructions: ['7', '53', '7', '8', '9'],
 				data: [],
-				description: "Output first input (0/1) AND second input (0/1)"
+				description: "OUTPUT = first INPUT AND second INPUT"
 			},
 			example6: {
 				name: "Example 6",
 				instructions: ['7', '53', '44', '7', '8', '9'],
 				data: [],
-				description: "Output first input 1 (0/1) OR second input (0/1)"
+				description: "OUTPUT = first INPUT OR second INPUT"
 			},
 			example7: {
 				name: "Example 7",
 				instructions: ['7', '39', '7', '38', '09', '28', '8', '9'],
 				data: [],
-				description: "Output first input - second input"
+				description: "OUTPUT = first INPUT - second INPUT"
 			},
 			example8: {
 				name: "Example 8",
 				instructions: ['01', '58', '23', '31', '02', '10', '32', '40', '9'],
 				data: ['7', '5', '0', '1'],
-				description: "D[2] = D[0] × D[1]"
+				description: "D[2] = 7 × 5"
 			},
 			example9: {
 				name: "Example 9",
 				instructions: ['00', '21', '68', '30', '02', '13', '32', '40', '9'],
 				data: ['10', '3', '0', '1'],
-				description: "D[0] / D[1], Q = D[2], R = D[0]"
+				description: "10 =  3 × D[2] + D[0]"
 			},
 			example10: {
 				name: "Example 10",
 				instructions: ['00', '8', '01', '32', '10', '31', '02', '30', '40'],
 				data: ['0', '1'],
-				description: "Output the Fibonacci sequence"
+				description: "OUTPUT = Fibonacci sequence"
 			},
 			example11: {
 				name: "Example 11",
 				instructions: ['71', '8', '00', '18', '30', '27', '58', '40', '9'],
 				data: ['0', '5', '4', '3', '2', '1', '0', '6', '1'],
-				description: "Output D[1] to D[6] using indexed addressing"
+				description: "OUTPUT = D[1] to D[6] using indexed addressing"
 			},
 			example12: {
 				name: "Example 12",
 				instructions: ['49', '', '', '', '', '', '', '', '', '40'],
 				data: [],
-				description: "Stop at floor 0 or 9 (top speed)"
+				description: "Where do you stop? (top speed)"
+			},
+			example13: {
+				name: "Example 13",
+				instructions: ['7', '30', '00', '21', '91', '65', '90', '30', '02', '13','32', '01', '14', '31', '42', '9'],
+				data: ['', '1', '0', '1', '2'],
+				description: "INPUT = D[2]^2 + D[0]"
 			},
 		};
 
